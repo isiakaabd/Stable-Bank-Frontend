@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ReactSvg from "../assets/polygon.avif";
+import Banner from "../assets/polygon.avif";
 
 const Home = () => {
   return (
@@ -31,7 +31,7 @@ const Home = () => {
           </div>
         </div>
         <div className="lg:flex-1">
-          <img src={ReactSvg} width="100%" alt="charity" />
+          <img src={Banner} width="100%" alt="charity" />
         </div>
       </div>
 

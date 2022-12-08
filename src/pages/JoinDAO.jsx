@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import DAOMember from "../assets/icon.png";
 
 const JoinDAO = () => {
   return (
@@ -15,26 +15,49 @@ const JoinDAO = () => {
           </div>
         </div>
 
-
         <div className="mt-12 flex-1 flex justify-center items-center">
-            <button className="bg-tertiary px-8 py-2 text-xl rounded font-medium">Join DAO</button>
+          <button className="bg-tertiary px-8 py-2 text-xl rounded font-medium">
+            Join DAO
+          </button>
         </div>
       </div>
 
-
       {/* The part where approved user can mint token dao, this is will be visible only when the user has been approved */}
+      {/* if this section is available, the one above will disappear and vice versa */}
 
-
-      <div className="md:flex justify-between md:mt-48 mt-32 pb-32">
+      <div className="md:flex justify-between md:mt-12 mt-12">
         <div className="flex-1">
           <div className="text-xl">
-            You are a member of Stable Bank DAO, mint token in order to be able to vote on a proposal
+            You are a member of Stable Bank DAO, mint token in order to be able
+            to vote on a proposal
           </div>
         </div>
 
-
         <div className="mt-12 flex-1 flex justify-center items-center">
-            <button className="bg-tertiary px-8 py-2 text-xl rounded font-medium">Mint DAO Token</button>
+          <button className="bg-tertiary px-8 py-2 text-xl rounded font-medium">
+            Mint DAO Token
+          </button>
+        </div>
+      </div>
+
+      <div className="text-white_variant font-mono mt-16 pb-32">
+        <div className="mb-10 text-center text-3xl underline">DAO MEMBERS</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+          <img
+            src={DAOMember}
+            className="border border-tertiary p-6 text-xl rounded-full w-[100%]"
+            alt="member of dao"
+          />
+          <img
+            src={DAOMember}
+            className="border border-tertiary p-6 text-xl rounded-full w-[100%]"
+            alt="member of dao"
+          />
+          <img
+            src={DAOMember}
+            className="border border-tertiary p-6 text-xl rounded-full w-[100%]"
+            alt="member of dao"
+          />
         </div>
       </div>
     </div>
