@@ -2,9 +2,18 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#0e0e4e",
+        secondary: "#ecb963",
+        tertiary: "#ee9a40",
+        white: '#ffffff',
+        white_variant: '#cccccc',
+      }
+    },
     fontFamily: {
       body: ["Quicksand", "sans-serif"],
+      mono: ["mono"]
     },
   },
   plugins: [],
