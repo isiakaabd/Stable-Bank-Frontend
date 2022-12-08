@@ -17,13 +17,13 @@ const Home = () => {
 
           <div className="flex justify-center lg:justify-start mt-4 mb-8 lg:mb-0">
             <Link
-              to={"/"}
+              to={"/proposals"}
               className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
             >
               Explore
             </Link>
             <Link
-              to={"/"}
+              to={"/join-dao"}
               className="bg-tertiary px-8 py-2 text-xl rounded font-medium ml-4"
             >
               Join DAO

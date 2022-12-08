@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center nav__bar text-white py-4 lg:px-16 md:px-8 px-8">
-      <div className="font-bold font-mono text-2xl">StableBankDAO</div>
+      <Link to={'/'} className="font-bold font-mono text-2xl">StableBankDAO</Link>
 
       <ul className="md:flex font-mono items-center text-lg font-medium hidden ">
         <li className="mr-4">
@@ -58,6 +58,9 @@ const Navbar = () => {
             </li>
             <li className="mr-4 mb-2">
               <Link to={"/vote-proposal"}>Vote Proposal</Link>
+            </li>
+            <li className="mr-4 mb-2">
+              <Link to={"/approve-member"}>Vote Proposal</Link>
             </li>
             <li className="">
               <ConnectionButton />
