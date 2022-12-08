@@ -9,6 +9,8 @@ module.exports = {
         tertiary: "#ee9a40",
         white: '#ffffff',
         white_variant: '#cccccc',
+        red: '#D10000',
+        green: '#00A300'
       }
     },
     fontFamily: {
