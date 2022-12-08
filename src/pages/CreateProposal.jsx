@@ -17,7 +17,7 @@ const CreateProposal = () => {
   };
 
   return (
-    <div className="bg-primary lg:px-16 md:px-8 px-8 pt-12 text-white_variant min-h-screen">
+    <div className="bg-primary lg:px-16 md:px-8 px-8 pt-12 pb-48 text-white_variant min-h-screen">
       <form
         className="mt-5 max-w-[650px] mx-auto border border-white p-4 rounded md:p-8"
         onSubmit={handleSubmit}
