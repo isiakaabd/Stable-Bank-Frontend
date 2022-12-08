@@ -1,10 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import DAOMember from "../assets/icon.png";
 
 const JoinDAO = () => {
   return (
     <div className="bg-primary text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
-      <div className="md:flex justify-between">
+      <div className="mb-8">
+      <Link className="bg-tertiary px-8 py-2 text-xl rounded font-medium" to={'/approve-dao-member'}>Approve DAO Member</Link>
+      
+      </div>
+      <div className="md:flex justify-between items-start">
         <div className="flex-1">
           <div className="text-xl">
             This is Stable Bank DAO, this organisation is set up to empower and

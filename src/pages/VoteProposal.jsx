@@ -12,9 +12,9 @@ const VoteProposal = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map(() => {
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((_x, i) => {
             return (
-              <div className="border border-tertiary text-xl rounded">
+              <div key={i} className="border border-tertiary text-xl rounded">
                 <div className="border-b border-tertiary pb-2">
                   <img src={Banner} alt="banner" />
                 </div>

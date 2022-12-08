@@ -47,20 +47,20 @@ const Navbar = () => {
           />
 
           <ul className="mt-20 flex flex-col justify-center items-center text-lg font-semibold font-mono mx-auto w-[100%]">
-            <li className="mr-4 mb-2">
+            <li className="mr-4 mb-4">
               <Link to={"/proposals"}>Proposals</Link>
             </li>
-            <li className="mr-4 mb-2">
+            <li className="mr-4 mb-4">
                 <Link to={'/join-dao'}>Join DAO</Link>
             </li>
-            <li className="mr-4 mb-2">
+            <li className="mr-4 mb-4">
               <Link to={"/create-proposal"}>Create Proposal</Link>
             </li>
-            <li className="mr-4 mb-2">
+            <li className="mr-4 mb-4">
               <Link to={"/vote-proposal"}>Vote Proposal</Link>
             </li>
-            <li className="mr-4 mb-2">
-              <Link to={"/approve-member"}>Vote Proposal</Link>
+            <li className="mr-4 mb-4">
+              <Link to={"/approve-member"}>Approve DAO Member</Link>
             </li>
             <li className="">
               <ConnectionButton />
