@@ -18,7 +18,7 @@ const Proposals = () => {
                 <div className="border-b border-tertiary pb-2">
                   <img src={Banner} alt="banner" />
                 </div>
-                <Link to={`proposal/${1}`}>
+                <Link to={`/proposal/${1}`}>
                 <div className="p-6">
                   <h1 className="text-2xl font-medium mb-2">PIG FARMING</h1>
                   <p className="mb-2">Agriculture Category</p>
