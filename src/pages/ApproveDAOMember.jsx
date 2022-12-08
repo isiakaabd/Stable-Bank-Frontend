@@ -8,14 +8,17 @@ const ApproveDAOMember = () => {
       </h2>
       {[0, 1, 2, 3, 4, 5].map((_x, i) => {
         return (
-          <div key={i} className="flex items-center justify-between mb-4 flex-wrap">
+          <div
+            key={i}
+            className="flex items-center justify-between mb-4 flex-wrap"
+          >
             <div className="text-xl font-medium">0x1234567890abcdef1234</div>
             <div className="flex items-center">
               <button className="bg-red px-4 py-1 text-xl rounded">
                 Reject
               </button>
               <button className="bg-green px-4 py-1 text-xl rounded ml-4">
-                Support
+                Accept
               </button>
             </div>
           </div>
@@ -23,7 +26,7 @@ const ApproveDAOMember = () => {
       })}
 
       {/* we may decide to remove this section later */}
-      <div className="pb-48">
+      {/* <div className="pb-48">
         <h2 className="text-xl md:text-2xl font-mono mb-4 mt-16">
           List of DAO Members
         </h2>
@@ -34,7 +37,7 @@ const ApproveDAOMember = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 };

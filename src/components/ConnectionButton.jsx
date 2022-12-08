@@ -35,21 +35,21 @@ export const ConnectionButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button className='main__button' onClick={openConnectModal} type="button">
+                  <button className='main__button p-2 rounded-md' onClick={openConnectModal} type="button">
                     Connect Wallet
                   </button>
                 );
               }
               if (chain.unsupported) {
                 return (
-                  <button  className='main__button' onClick={openChainModal} type="button">
+                  <button  className='main__button  p-2 rounded-md' onClick={openChainModal} type="button">
                     Wrong network
                   </button>
                 );
               }
               return (
                 <div style={{ display: 'flex', gap: 12 }}>
-                  <button onClick={openAccountModal} type="button"  className='main__button'>
+                  <button onClick={openAccountModal} type="button"  className='main__button  p-2 rounded-md'>
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`

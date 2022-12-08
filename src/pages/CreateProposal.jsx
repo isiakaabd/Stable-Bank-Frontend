@@ -24,7 +24,7 @@ const CreateProposal = () => {
       >
         <h1 className="text-3xl text-center underline mb-8">Create Proposal</h1>
         <div className="">
-          <div className="mt-2 form-field">
+          <div className="mt-2 md:relative">
             <label className="md:hidden font-medium">Title</label>
             <input
               onChange={(e) => setTitle(e.target.value)}
@@ -33,12 +33,12 @@ const CreateProposal = () => {
               autoFocus
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             />
-            <label className="hidden md:block text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
               Title
             </label>
           </div>
 
-          <div className="mt-7 form-field">
+          <div className="mt-7 md:relative">
             <label className="md:hidden font-medium">Description</label>
             <textarea
               onChange={(e) => setDescription(e.target.value)}
@@ -47,12 +47,12 @@ const CreateProposal = () => {
               rows={4}
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             ></textarea>
-            <label className="hidden md:block text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
               Description
             </label>
           </div>
 
-          <div className="form-field mt-7">
+          <div className="md:relative mt-7">
             <label className="md:hidden font-medium">Amount</label>
             <input
               type={"number"}
@@ -61,12 +61,12 @@ const CreateProposal = () => {
               placeholder=" "
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             />
-            <label className="hidden md:block text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
               Amount
             </label>
           </div>
 
-          <div className="form-field mt-7">
+          <div className="md:relative mt-7">
             <label className="md:hidden font-medium">Recipient Address</label>
             <input
               type={"number"}
@@ -75,12 +75,12 @@ const CreateProposal = () => {
               placeholder=" "
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             />
-            <label className="hidden md:block text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
               Recipient Address
             </label>
           </div>
 
-          <div className="form-field mt-5">
+          <div className="md:relative mt-5">
             <div className="font-medium">Recipient Address</div>
             <select
               name="category"
