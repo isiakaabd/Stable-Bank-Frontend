@@ -16,18 +16,21 @@ const Home = () => {
           </p>
 
           <div className="flex justify-center lg:justify-start mt-4 mb-8 lg:mb-0">
-            <Link
+            {/* <Link
               to={"/proposals"}
               className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
             >
               Explore
-            </Link>
+            </Link> */}
             <Link
               to={"/join-dao"}
-              className="bg-tertiary px-8 py-2 text-xl rounded font-medium ml-4"
+              className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
             >
               Join DAO
             </Link>
+          <button className="bg-tertiary px-5 py-2 text-xl rounded font-medium ml-4">
+            Mint mUSDC
+          </button>
           </div>
         </div>
         <div className="lg:flex-1">
