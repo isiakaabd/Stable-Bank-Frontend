@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Outfit:wght@300;400;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,20 +6,28 @@
 
 @layer base {
   html {
-    font-family: "Quicksand";
+    font-family: "Outfit", sans-serif;
   }
+}
+
+.bg-image {
+  background-image: url("./assets/brown.jpeg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  backdrop-filter: blur(8px);
+  background-size: cover;
 }
 
 .nav__bar {
   backdrop-filter: blur(13px) !important;
-  background-color: #0e0e4eef;
+  background-color: #0e2433ef;
   border-bottom: 1px solid rgba(255, 255, 255, 0.105);
 }
 
 .main__button {
   color: rgba(255, 255, 255, 0.915);
   border: 1px solid rgba(255, 255, 255, 0.382);
-  background-color: rgba(14, 12, 12, 0.041);
+  background-color: #ee9a40;
 }
 
 @media only screen and (min-width: 768px) {

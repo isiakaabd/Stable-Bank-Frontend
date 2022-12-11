@@ -3,7 +3,7 @@ import Banner from "../assets/icon.png";
 
 const VoteProposal = () => {
   return (
-    <div className="bg-primary lg:px-16 md:px-8 px-8 pt-12">
+    <div className="bg-[#0e2433] lg:px-16 md:px-8 px-8 pt-12">
       <div className="text-white_variant font-mono t-12 pb-32">
         <div className="mb-12 text-xl">
           Members of Stable Bank DAO. Our mission is to support people's live
@@ -14,8 +14,8 @@ const VoteProposal = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((_x, i) => {
             return (
-              <div key={i} className="border border-tertiary text-xl rounded">
-                <div className="border-b border-tertiary pb-2">
+              <div key={i} className="border-2 border-tertiary text-xl rounded-3xl">
+                <div className="border-b-2 border-tertiary pb-2">
                   <img src={Banner} alt="banner" />
                 </div>
                 <div className="p-6">
@@ -27,19 +27,16 @@ const VoteProposal = () => {
                   {/* There will be a conditional rendering here: to vote for reject or support, a rejected proposal or supported proposal */}
 
                   <div className="flex items-center justify-between">
-                    <button className="bg-red px-8 py-2 text-xl rounded">
-                      Reject
-                    </button>
-                    <button className="bg-green px-8 py-2 text-xl rounded">
-                      Support
+                    <button className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded">
+                      Vote
                     </button>
                   </div>
 
-                  {/* <button className="bg-tertiary px-8 py-2 text-xl rounded">
+                  {/* <button className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded">
                     Rejected
                   </button>
-                  <button className="bg-tertiary px-8 py-2 text-xl rounded">
-                    Supported
+                  <button className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded">
+                    Approved
                   </button> */}
                 </div>
               </div>

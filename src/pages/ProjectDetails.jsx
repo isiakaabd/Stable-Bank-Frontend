@@ -3,18 +3,18 @@ import DAOMember from "../assets/icon.png";
 import { AppreciationModal, DonateModal } from "../components/Modal";
 import ProgressBar from "../components/ProgressBar";
 
-const ProposalDetails = () => {
+const ProjectDetails = () => {
   const [isOpenDonateModal, setIsOpenDonateModal] = useState(false);
 
   const [isApreciationModal, setIsApreciationModal] = useState(false);
 
   return (
     <Fragment>
-      <div className="bg-primary text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
+      <div className="bg-[#0e2433] text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
         <div className="mb-8">
           <div className="hidden md:flex flex-wrap items-center justify-between">
             {/* The in progress button will also be used for cancelled and completed */}
-            <button className="bg-secondary px-8 py-2 text-xl rounded">
+            <button className="bg-tertiary px-8 py-2 text-xl rounded">
               IN PROGRESS
             </button>
 
@@ -38,7 +38,7 @@ const ProposalDetails = () => {
             <button className="bg-red px-12 py-2 text-xl rounded mr-4">
               STOP PROJECT
             </button>
-            <button className="bg-secondary px-14 py-2 text-xl rounded mt-4 mr-4">
+            <button className="bg-tertiary px-14 py-2 text-xl rounded mt-4 mr-4">
               IN PROGRESS
             </button>
 
@@ -57,13 +57,10 @@ const ProposalDetails = () => {
 
         <div className="border border-tertiary"></div>
 
-        <div className="mt-8 font-mono pb-48">
+        <div className="mt-16 font-mono pb-48">
           <div className="md:flex">
-            <div className="flex-1 mb-8">
-              <img src={DAOMember} alt="banner" />
-            </div>
             <div className="flex-1">
-              <ul className="text-xl">
+              <ul className="text-2xl">
                 <li className="mb-2">
                   TITLE: <strong>Food Bank</strong>
                 </li>
@@ -82,22 +79,25 @@ const ProposalDetails = () => {
                 </li>
               </ul>
             </div>
+            <div className="flex-1 mb-8">
+              <div className="underline text-3xl">DESCRIPTION</div>
+              <p className="text-xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ve ro
+                sed id ducimus odio, obcaecati a corrupti ab, ipsam temporibus
+                laudantium modi corporis necessitatibus. Cupiditate quos magnam
+                harum nemo, quia culpa. Quo vel beatae commodi, ab quos
+                corporis. Deserunt minima, quod sint suscipit placeat unde
+                sapiente nisi, illum ipsa, similique autem rerum eligendi vitae!
+                Repudiandae nam eos laudantium error soluta illo ipsam! Dicta
+                necessitatibus id distinctio rerum molestias cumque inventore
+                eligendi magni, unde impedit voluptatem quis, debitis vero
+                tempore veniam voluptas ipsum consequuntur! Incidunt soluta
+                doloribus voluptatum suscipit tempore necessitatibus numquam
+                amet ipsam cupiditate corporis quo quisquam accusamus, aperiam
+                ullam repellendus.
+              </p>
+            </div>
           </div>
-          <div className="underline text-2xl mt-6">DESCRIPTION</div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ve ro sed
-            id ducimus odio, obcaecati a corrupti ab, ipsam temporibus
-            laudantium modi corporis necessitatibus. Cupiditate quos magnam
-            harum nemo, quia culpa. Quo vel beatae commodi, ab quos corporis.
-            Deserunt minima, quod sint suscipit placeat unde sapiente nisi,
-            illum ipsa, similique autem rerum eligendi vitae! Repudiandae nam
-            eos laudantium error soluta illo ipsam! Dicta necessitatibus id
-            distinctio rerum molestias cumque inventore eligendi magni, unde
-            impedit voluptatem quis, debitis vero tempore veniam voluptas ipsum
-            consequuntur! Incidunt soluta doloribus voluptatum suscipit tempore
-            necessitatibus numquam amet ipsam cupiditate corporis quo quisquam
-            accusamus, aperiam ullam repellendus.
-          </p>
         </div>
       </div>
       {isOpenDonateModal && (
@@ -117,4 +117,4 @@ const ProposalDetails = () => {
   );
 };
 
-export default ProposalDetails;
+export default ProjectDetails;

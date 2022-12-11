@@ -17,9 +17,9 @@ const CreateProposal = () => {
   };
 
   return (
-    <div className="bg-primary lg:px-16 md:px-8 px-8 pt-12 pb-48 text-white_variant min-h-screen">
+    <div className="bg-[#0e2433] lg:px-16 md:px-8 px-8 pt-12 pb-48 text-white_variant min-h-screen">
       <form
-        className="mt-5 max-w-[650px] mx-auto border border-white p-4 rounded md:p-8"
+        className="mt-5 max-w-[650px] mx-auto border-2 border-tertiary p-4 rounded-2xl md:p-8"
         onSubmit={handleSubmit}
       >
         <h1 className="text-3xl text-center underline mb-8">Create Proposal</h1>
@@ -33,7 +33,7 @@ const CreateProposal = () => {
               autoFocus
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             />
-            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-[#0e2433] font-semibold">
               Title
             </label>
           </div>
@@ -47,7 +47,7 @@ const CreateProposal = () => {
               rows={4}
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             ></textarea>
-            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-[#0e2433] font-semibold">
               Description
             </label>
           </div>
@@ -61,7 +61,7 @@ const CreateProposal = () => {
               placeholder=" "
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             />
-            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-[#0e2433] font-semibold">
               Amount
             </label>
           </div>
@@ -75,26 +75,26 @@ const CreateProposal = () => {
               placeholder=" "
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             />
-            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-tertiary font-semibold">
+            <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-[#0e2433] font-semibold">
               Recipient Address
             </label>
           </div>
 
           <div className="md:relative mt-5">
-            <div className="font-medium">Recipient Address</div>
+            <div className="font-medium">Category</div>
             <select
               name="category"
               className="w-[100%] p-3 rounded text-dark"
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option defaultValue={""}>Select Title</option>
+              <option defaultValue={""}>Select Category</option>
               <option value={"tech"}>Tech</option>
               <option value={"finance"}>Finance</option>
               <option value={"agriculture"}>Agriculture</option>
             </select>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 flex justify-center">
             <LoadingBtn
               loading={loading}
               loadingCopy={"Submitting.."}

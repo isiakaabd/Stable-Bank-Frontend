@@ -2,7 +2,7 @@ import React from "react";
 
 const ApproveDAOMember = () => {
   return (
-    <div className="bg-primary text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
+    <div className="bg-[#0e2433] text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
       <h2 className="text-xl md:text-2xl font-mono mb-4">
         List of people requested to join DAO
       </h2>

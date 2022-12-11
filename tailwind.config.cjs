@@ -15,8 +15,7 @@ module.exports = {
       }
     },
     fontFamily: {
-      body: ["Quicksand", "sans-serif"],
-      mono: ["mono"]
+      mono: ["Outfit", "sans-serif"],
     },
   },
   plugins: [],

@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Banner from "../assets/icon.png";
 import ProgressBar from "../components/ProgressBar";
 
-const Proposals = () => {
+const Projects = () => {
   return (
-    <div className="bg-primary lg:px-16 md:px-8 px-8 pt-12">
+    <div className="bg-[#0e2433] lg:px-16 md:px-8 px-8 pt-12">
       <div className="text-white_variant font-mono t-12 pb-32">
         <div className="mb-12 text-xl">
           The list of proposals/projects that you can fund at Stable Bank DAO.
@@ -14,8 +14,8 @@ const Proposals = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((_x, i) => {
             return (
-              <div key={i} className="border border-tertiary text-xl rounded">
-                <div className="border-b border-tertiary pb-2">
+              <div key={i} className="border-2 border-tertiary text-xl rounded-3xl">
+                <div className="border-b-2 border-tertiary pb-2">
                   <img src={Banner} alt="banner" />
                 </div>
                 <Link to={`/proposal/${1}`}>
@@ -40,4 +40,4 @@ const Proposals = () => {
   );
 };
 
-export default Proposals;
+export default Projects;
