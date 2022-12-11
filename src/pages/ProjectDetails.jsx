@@ -12,43 +12,43 @@ const ProjectDetails = () => {
     <Fragment>
       <div className="bg-[#0e2433] text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
         <div className="mb-8">
-          <div className="hidden md:flex flex-wrap items-center justify-between">
+          <div className="hidden lg:flex flex-wrap items-center justify-between">
             {/* The in progress button will also be used for cancelled and completed */}
             <button className="bg-tertiary px-8 py-2 text-xl rounded">
               IN PROGRESS
             </button>
 
             <div className="">
-              <button className="bg-red px-8 py-2 text-xl rounded mt-4 mr-4">
+              <button className="bg-red px-8 py-2 text-xl rounded mr-4">
                 STOP PROJECT
               </button>
-              <button className="bg-green px-8 py-2 text-xl rounded mt-4">
+              <button className="bg-green px-8 py-2 text-xl rounded">
                 SEND FUND
               </button>
             </div>
             <button
               onClick={() => setIsOpenDonateModal(true)}
-              className="mt-4 bg-tertiary px-8 py-2 text-xl rounded"
+              className="bg-tertiary px-8 py-2 text-xl rounded"
             >
               DONATE
             </button>
           </div>
 
-          <div className="flex md:hidden flex-wrap items-center justify-between">
-            <button className="bg-red px-12 py-2 text-xl rounded mr-4">
+          <div className="flex lg:hidden flex-wrap items-center justify-between">
+            <button className="bg-red px-12 py-2 text-xl rounded w-[100%]">
               STOP PROJECT
             </button>
-            <button className="bg-tertiary px-14 py-2 text-xl rounded mt-4 mr-4">
+            <button className="bg-tertiary px-14 py-2 text-xl rounded mt-4 w-[100%]">
               IN PROGRESS
             </button>
 
-            <button className="bg-green px-16 py-2 text-xl rounded mt-4">
+            <button className="bg-green px-16 py-2 text-xl rounded mt-4 w-[100%]">
               SEND FUND
             </button>
 
             <button
               onClick={() => setIsOpenDonateModal(true)}
-              className="mt-4 bg-tertiary px-20 py-2 text-xl rounded"
+              className="mt-4 bg-tertiary px-20 py-2 text-xl rounded w-[100%]"
             >
               DONATE
             </button>
