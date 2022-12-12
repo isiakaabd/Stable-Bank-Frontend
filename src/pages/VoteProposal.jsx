@@ -1,5 +1,5 @@
 import React from "react";
-import Banner from "../assets/icon.png";
+import Banner from "../assets/project.jpeg";
 
 const VoteProposal = () => {
   return (
@@ -14,9 +14,16 @@ const VoteProposal = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((_x, i) => {
             return (
-              <div key={i} className="border-2 border-tertiary text-xl rounded-3xl">
+              <div
+                key={i}
+                className="border-2 border-tertiary text-xl rounded-3xl"
+              >
                 <div className="border-b-2 border-tertiary pb-2">
-                  <img src={Banner} alt="banner" />
+                  <img
+                    src={Banner}
+                    className="rounded-t-3xl w-[100%] h-[250px]"
+                    alt="banner"
+                  />
                 </div>
                 <div className="p-6">
                   <h1 className="text-2xl font-medium mb-2">PIG FARMING</h1>

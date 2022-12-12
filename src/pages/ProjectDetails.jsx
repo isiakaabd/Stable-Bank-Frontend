@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from "react";
-import DAOMember from "../assets/icon.png";
 import { AppreciationModal, DonateModal } from "../components/Modal";
 import ProgressBar from "../components/ProgressBar";
 

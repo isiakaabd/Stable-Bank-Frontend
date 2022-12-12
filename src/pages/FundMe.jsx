@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Banner from "../assets/polygon.avif";
+import Banner from "../assets/project.jpeg";
 import Giver from "../assets/giver.png";
 import ProgressBar from "../components/ProgressBar";
 
@@ -10,7 +10,8 @@ const FundMe = () => {
       <div className="lg:flex justify-between">
         <div className="lg:mt-8 lg:flex-1 text-white_variant">
           <div className="md:text-4xl text-4xl font-medium text-center lg:text-left">
-          "Charity is the one thing that cannot be taken away from us, and the one thing that will never disappear".
+            "Charity is the one thing that cannot be taken away from us, and the
+            one thing that will never disappear".
           </div>
 
           <p className="text-center lg:text-left mt-6 text-2xl md:text-3xl">
@@ -50,9 +51,16 @@ const FundMe = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((_x, i) => {
             return (
-              <div key={i} className="border-2 border-tertiary text-xl rounded-3xl">
+              <div
+                key={i}
+                className="border-2 border-tertiary text-xl rounded-3xl"
+              >
                 <div className="border-b-2 border-tertiary pb-2">
-                  <img src={Banner} alt="banner" />
+                  <img
+                    src={Banner}
+                    className="rounded-t-3xl w-[100%] h-[250px]"
+                    alt="banner"
+                  />
                 </div>
                 <Link to={`/proposal/${1}`}>
                   <div className="p-6">
