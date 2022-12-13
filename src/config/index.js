@@ -1,6 +1,7 @@
 import DAO from "../utils/abi/DAO.json"
 import SUSDC from "../utils/abi/SUSDC.json"
 import USDCMinting from "../utils/abi/usdcMinting.json"
+import StableBank from "../utils/abi/StableBank.json"
 
 export const DAO_ADDRESS = "0x0c7C33686486A2e3a1f8E4F0c3F7584d0bf00dEC"
 export const DAO_TOKEN_ADDRESS = "0x799A21ee3C1264e31382E50B95191f6A8A82868d"
@@ -23,6 +24,11 @@ export const sUSDC_MINTING_CONTRACT = {
 export const sUSDC_CONTRACT = {
     address: sUSDC_TOKEN_ADDRESS,
     abi: SUSDC.abi,
+}
+
+export const DAO_TOKEN_CONTRACT = {
+    address: DAO_TOKEN_ADDRESS,
+    abi: StableBank.abi,
 }
 
 

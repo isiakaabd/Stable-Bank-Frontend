@@ -1,19 +1,45 @@
+import { ethers } from "ethers";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useContractWrite, useWaitForTransaction } from "wagmi";
 import LoadingBtn from "../components/LoadingBtn";
+import { DAO_CONTRACT } from "../config";
 
 const CreateProposal = () => {
+  const navigate = useNavigate()
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
-  const [recipientAddress, setRecipientAddress] = useState("");
-  const [category, setCategory] = useState("");
+  const [deadline, setDeadline] = useState("");
 
-  const loading =  null; // the loading state here will be declared later
+  const {
+    data: createProposalData,
+    isError: createProposalError,
+    isLoading: createProposalLoading,
+    write: createProposal,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...DAO_CONTRACT,
+    functionName: "createProposal",
+    args: [title, description, ethers.utils.parseEther(amount ? amount.toString() : "0"), new Date(deadline).getTime() / 1000],
+  });
+
+  const { isLoading: createProposalWaitLoading } = useWaitForTransaction({
+    hash: createProposalData?.hash,
+    onSuccess(data) {
+      toast.success("Successful!");
+      navigate("/fund-me")
+    },
+    onError(error) {
+      toast.error("Failed!");
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log({ title, description, amount, recipientAddress, category });
+    createProposal?.();
   };
 
   return (
@@ -27,6 +53,7 @@ const CreateProposal = () => {
           <div className="mt-2 md:relative">
             <label className="md:hidden font-medium">Title</label>
             <input
+              required
               onChange={(e) => setTitle(e.target.value)}
               placeholder=" "
               value={title}
@@ -41,6 +68,7 @@ const CreateProposal = () => {
           <div className="mt-7 md:relative">
             <label className="md:hidden font-medium">Description</label>
             <textarea
+              required
               onChange={(e) => setDescription(e.target.value)}
               placeholder=" "
               value={description}
@@ -55,6 +83,7 @@ const CreateProposal = () => {
           <div className="md:relative mt-7">
             <label className="md:hidden font-medium">Amount</label>
             <input
+              required
               type={"number"}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -67,20 +96,21 @@ const CreateProposal = () => {
           </div>
 
           <div className="md:relative mt-7">
-            <label className="md:hidden font-medium">Recipient Address</label>
+            <label className="md:hidden font-medium">Deadline</label>
             <input
-              type={"number"}
-              value={recipientAddress}
-              onChange={(e) => setRecipientAddress(e.target.value)}
+              required
+              type={"date"}
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
               placeholder=" "
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
             />
             <label className="hidden md:block pointer-events-none p-3 absolute top-0 left-0 opacity-50 text-[#0e2433] font-semibold">
-              Recipient Address
+              Deadline
             </label>
           </div>
 
-          <div className="md:relative mt-5">
+          {/* <div className="md:relative mt-5">
             <div className="font-medium">Category</div>
             <select
               name="category"
@@ -92,11 +122,11 @@ const CreateProposal = () => {
               <option value={"finance"}>Finance</option>
               <option value={"agriculture"}>Agriculture</option>
             </select>
-          </div>
+          </div> */}
 
           <div className="mt-8 flex justify-center">
             <LoadingBtn
-              loading={loading}
+              loading={createProposalWaitLoading || createProposalLoading}
               loadingCopy={"Submitting.."}
               copy={"Submit"}
             />

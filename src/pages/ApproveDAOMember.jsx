@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import {
@@ -5,7 +6,7 @@ import {
   useContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { DAO_CONTRACT } from "../config";
+import { DAO_ADDRESS, DAO_CONTRACT, DAO_TOKEN_CONTRACT } from "../config";
 
 const ApproveDAOMember = () => {
   const [address, setAddress] = useState("");
@@ -15,6 +16,28 @@ const ApproveDAOMember = () => {
       ...DAO_CONTRACT,
       functionName: "showAllDAOMemberDetails",
     });
+
+  const {
+    data: approveBurnData,
+    isError: approveBurnError,
+    isLoading: approveBurnLoading,
+    write: approveBurn,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...DAO_TOKEN_CONTRACT,
+    functionName: "approve",
+    args: [DAO_ADDRESS, ethers.utils.parseEther("10")],
+  });
+
+  const { isLoading: approveBurnWaitLoading } = useWaitForTransaction({
+    hash: approveBurnData?.hash,
+    onSuccess(data) {
+      rejectMember?.();
+    },
+    onError(error) {
+      toast.error("Failed!");
+    },
+  });
 
   const {
     data: approveMemberData,
@@ -37,8 +60,6 @@ const ApproveDAOMember = () => {
       toast.error("Failed!");
     },
   });
-
-  console.log(address);
 
   const {
     data: rejectMemberData,
@@ -66,8 +87,8 @@ const ApproveDAOMember = () => {
     setAddress(address);
 
     setTimeout(() => {
-      rejectMember?.();
-    }, 0);
+      approveBurn?.();
+    }, 1500);
   };
 
   const handleApprove = (address) => {
@@ -75,7 +96,7 @@ const ApproveDAOMember = () => {
 
     setTimeout(() => {
       approveMember?.();
-    }, 0);
+    }, 1500);
   };
 
   return (
