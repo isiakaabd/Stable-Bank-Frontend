@@ -16,10 +16,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import 'animate.css';
 
-// require("dotenv").config()
-
-// const alchemyId = process.env.POLYGON_ALCHEMY_ID;
-const alchemyId = null;
+const alchemyId = import.meta.env.VITE_POLYGON_ALCHEMY_ID;
+// const alchemyId = null;
 
 const { provider, chains } = configureChains(
   [chain.polygonMumbai],

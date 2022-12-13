@@ -1,13 +1,40 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { useContractWrite, useWaitForTransaction } from "wagmi";
+import { sUSDC_MINTING_CONTRACT } from "../config";
 
 const Home = () => {
+  // const {
+  //   data: mintsUSDCData,
+  //   isError: mintsUSDCError,
+  //   isLoading: mintsUSDCLoading,
+  //   writeAsync: mintsUSDC,
+  // } = useContractWrite({
+  //   mode: "recklesslyUnprepared",
+  //   ...sUSDC_MINTING_CONTRACT,
+  //   functionName: "mintToken",
+  // });
+
+  // const { isLoading: mintsUSDCWaitLoading } = useWaitForTransaction({
+  //   hash: mintsUSDCData?.hash,
+  //   onSuccess(data) {
+  //     toast.success("Minted Successfully!");
+  //   },
+  //   onError(error) {
+  //     toast.error("Failed!");
+  //   },
+  // });
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   mintsUSDC?.();
+  // };
+
   return (
     <div className="bg-image">
       <div className="text-center text-white py-7 lg:px-16 md:px-8 px-8">
-        <div className="font-bold font-mono text-4xl">
-          StableBankDAO
-        </div>
+        <div className="font-bold font-mono text-4xl">StableBankDAO</div>
       </div>
       <div className="lg:px-16 md:px-8 px-8 pt-12">
         <div className="">
@@ -32,6 +59,16 @@ const Home = () => {
             >
               Join DAO
             </Link>
+            {/* <form onSubmit={handleSubmit}>
+              <button
+                // onClick={mintsUSDC?.()}
+                type="submit"
+                className="bg-[#0e2433] px-8 py-2 text-xl rounded font-medium ml-6"
+              >
+                {mintsUSDCLoading || mintsUSDCWaitLoading ? "Minting" : "Mint"}
+              </button>
+
+            </form> */}
           </div>
         </div>
 

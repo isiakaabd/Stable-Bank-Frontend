@@ -1,5 +1,9 @@
+import { ethers } from "ethers";
 import React, { Fragment, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { useContractWrite, useWaitForTransaction } from "wagmi";
+import { DAO_ADDRESS, DAO_CONTRACT, sUSDC_CONTRACT } from "../config";
 import LoadingBtn from "./LoadingBtn";
 
 export const DonateModal = ({
@@ -111,11 +115,61 @@ export const AppreciationModal = ({ setIsApreciationModal, amount }) => {
 export const JoinDAOModal = ({ setIsOpen }) => {
   const [name, setName] = useState("");
 
-  const loading = false;
+  const {
+    data: approveDAOData,
+    isError: approveDAOError,
+    isLoading: approveDAOLoading,
+    write: approveDAO,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...sUSDC_CONTRACT,
+    functionName: "approve",
+    args: [
+      DAO_ADDRESS,
+      ethers.utils.parseEther("10"),
+    ],
+  });
+
+  const { isLoading: approveDAOWaitLoading } = useWaitForTransaction({
+    hash: approveDAOData?.hash,
+    onSuccess(data) {
+      joinDAO?.();
+    },
+    onError(error) {
+      toast.error("Failed!");
+    },
+  });
+
+  const {
+    data: joinDAOData,
+    isError: joinDAOError,
+    isLoading: joinDAOLoading,
+    write: joinDAO,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...DAO_CONTRACT,
+    functionName: "joinDAO",
+    args: [name],
+  });
+
+  const { isLoading: joinDAOWaitLoading } = useWaitForTransaction({
+    hash: joinDAOData?.hash,
+    onSuccess(data) {
+      toast.success("Successful!");
+      setName("");
+      setIsOpen(false);
+    },
+    onError(error) {
+      toast.error("Failed!");
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    approveDAO?.();
   };
+
   return (
     <Fragment>
       <div className="the__modal__wrapper grid place-items-center z-10 fixed h-screen w-screen top-0 right-0">
@@ -156,9 +210,14 @@ export const JoinDAOModal = ({ setIsOpen }) => {
                   Close
                 </button>
                 <LoadingBtn
-                  loading={loading}
-                  loadingCopy={"Submitting"}
-                  copy={"Submit"}
+                  loading={
+                    approveDAOLoading ||
+                    approveDAOWaitLoading ||
+                    joinDAOLoading ||
+                    joinDAOWaitLoading
+                  }
+                  loadingCopy={"Joining..."}
+                  copy={"Join"}
                 />
               </div>
             </div>
