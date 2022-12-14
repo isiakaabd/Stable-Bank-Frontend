@@ -5,24 +5,69 @@ import { toast } from "react-toastify";
 import { useContractWrite, useWaitForTransaction } from "wagmi";
 import { DAO_ADDRESS, DAO_CONTRACT, sUSDC_CONTRACT } from "../config";
 import LoadingBtn from "./LoadingBtn";
+import CrowdFund from "../utils/abi/CrowdFund.json";
 
 export const DonateModal = ({
   setIsOpenDonateModal,
   setIsApreciationModal,
+  crowdFundAddress,
 }) => {
   const [amount, setAmount] = useState(0);
 
-  const loading = false;
+  const {
+    data: approveData,
+    isError: approveError,
+    isLoading: approveLoading,
+    write: approve,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    ...sUSDC_CONTRACT,
+    functionName: "approve",
+    args: [crowdFundAddress, amount ? ethers.utils.parseEther(amount) : "0"],
+  });
+
+  const { isLoading: approveWaitLoading } = useWaitForTransaction({
+    hash: approveData?.hash,
+    onSuccess(data) {
+      donateFund?.();
+    },
+    onError(error) {
+      toast.error("Failed!");
+    },
+  });
+
+  const {
+    data: donateFundData,
+    isError: donateFundError,
+    isLoading: donateFundLoading,
+    write: donateFund,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    address: crowdFundAddress,
+    abi: CrowdFund.abi,
+    functionName: "donateFund",
+    args: [amount],
+  });
+
+  const { isLoading: donateFundWaitLoading } = useWaitForTransaction(
+    {
+      hash: donateFundData?.hash,
+      onSuccess(data) {
+        setIsApreciationModal(true);
+        setIsOpenDonateModal(false);
+      },
+      onError(error) {
+        toast.error(`Failed! ${error?.reason}`);
+      },
+    }
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log({ amount });
-
-    setIsOpenDonateModal(false);
-
-    setIsApreciationModal(true);
+    approve?.();
   };
+
   return (
     <Fragment>
       <div className="the__modal__wrapper grid place-items-center z-10 fixed h-screen w-screen top-0 right-0">
@@ -67,9 +112,14 @@ export const DonateModal = ({
                   Close
                 </button>
                 <LoadingBtn
-                  loading={loading}
-                  loadingCopy={"Submitting"}
-                  copy={"Submit"}
+                  loading={
+                    approveWaitLoading ||
+                    approveLoading ||
+                    donateFundLoading ||
+                    donateFundWaitLoading
+                  }
+                  loadingCopy={"Donating..."}
+                  copy={"Donate"}
                 />
               </div>
             </div>
@@ -80,7 +130,7 @@ export const DonateModal = ({
   );
 };
 
-export const AppreciationModal = ({ setIsApreciationModal, amount }) => {
+export const AppreciationModal = ({ setIsApreciationModal, name }) => {
   return (
     <div className="the__modal__wrapper grid place-items-center z-10 fixed h-screen w-screen top-0 right-0">
       <div className="the__modal__item min-h-[300px] p-4 max-w-[450px] w-[100%] rounded-md text-white_variant font-mono">
@@ -91,12 +141,12 @@ export const AppreciationModal = ({ setIsApreciationModal, amount }) => {
         </div>
 
         <div className="text-2xl font-medium mt-6">
-          Thank You for donating to Food Bank
+          Thank You for donating to {name}
         </div>
 
-        <p className="text-lg mt-2">
+        {/* <p className="text-lg mt-2">
           Check your appreciation NFT on <a href="#">Opensea.</a>
-        </p>
+        </p> */}
 
         <div className="flex justify-end">
           <button
@@ -124,10 +174,7 @@ export const JoinDAOModal = ({ setIsOpen }) => {
     mode: "recklesslyUnprepared",
     ...sUSDC_CONTRACT,
     functionName: "approve",
-    args: [
-      DAO_ADDRESS,
-      ethers.utils.parseEther("10"),
-    ],
+    args: [DAO_ADDRESS, ethers.utils.parseEther("10")],
   });
 
   const { isLoading: approveDAOWaitLoading } = useWaitForTransaction({

@@ -13,8 +13,6 @@ const Projects = () => {
       functionName: "returnCrowdfund",
     });
 
-  console.log("SSSSSSSSSSSSSSSS: ", returnCrowdfund);
-
   const init_tx_data = [];
 
   if (returnCrowdfund?.length > 0) {
@@ -44,8 +42,6 @@ const Projects = () => {
   });
 
   const [proposals, setProposals] = useState([proposal]);
-
-  console.log("AAAAAAAAAAAAA: ", proposals);
 
   return (
     <div className="bg-[#0e2433] lg:px-16 md:px-8 px-8 pt-12">
