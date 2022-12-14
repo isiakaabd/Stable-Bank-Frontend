@@ -14,11 +14,9 @@ import { publicProvider } from "wagmi/providers/public";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import 'animate.css';
+import "animate.css";
 
 const alchemyId = import.meta.env.VITE_POLYGON_ALCHEMY_ID;
-// const alchemyId = null;
-
 const { provider, chains } = configureChains(
   [chain.polygonMumbai],
   [

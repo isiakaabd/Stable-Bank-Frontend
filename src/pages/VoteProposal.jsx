@@ -22,20 +22,19 @@ const VoteProposal = () => {
       ...DAO_CONTRACT,
       functionName: "Admin",
     });
-
   const { data: getAllProposals, isLoading: getAllProposalsLoading } =
     useContractRead({
       ...DAO_CONTRACT,
       functionName: "getAllProposals",
     });
 
-    // const { data: returnClonedAddress, isLoading: returnClonedAddressLoading } =
-    // useContractRead({
-    //   ...DAO_CONTRACT,
-    //   functionName: "returnClonedAddress",
-    // });
+  // const { data: returnClonedAddress, isLoading: returnClonedAddressLoading } =
+  // useContractRead({
+  //   ...DAO_CONTRACT,
+  //   functionName: "returnClonedAddress",
+  // });
 
-    // console.log(returnClonedAddress);
+  // console.log(returnClonedAddress);
 
   const {
     data: approveBurnData,
@@ -245,7 +244,9 @@ const VoteProposal = () => {
                           .
                         </p>
 
-                        <div className="text-xs">* You should only vote once.</div>
+                        <div className="text-xs">
+                          * You should only vote once.
+                        </div>
 
                         {/* There will be a conditional rendering here: to vote for reject or support, a rejected proposal or supported proposal */}
 
