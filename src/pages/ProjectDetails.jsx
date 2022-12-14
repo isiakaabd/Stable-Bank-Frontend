@@ -1,12 +1,69 @@
+import { ethers } from "ethers";
 import React, { Fragment, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useContractRead, useContractReads } from "wagmi";
 import { AppreciationModal, DonateModal } from "../components/Modal";
 import ProgressBar from "../components/ProgressBar";
+import { CROWDFUND_FACTORY_CONTRACT } from "../config";
+import CrowdFund from "../utils/abi/CrowdFund.json";
 
 const ProjectDetails = () => {
+
+  const { id } = useParams();
+
   const [isOpenDonateModal, setIsOpenDonateModal] = useState(false);
 
   const [isApreciationModal, setIsApreciationModal] = useState(false);
 
+
+
+  const { data: returnCrowdfund, isLoading: returnCrowdfundLoading } =
+    useContractRead({
+      ...CROWDFUND_FACTORY_CONTRACT,
+      functionName: "returnCrowdfund",
+    });
+
+  const init_tx_data = [];
+
+  if (returnCrowdfund.length > 0) {
+    for (let i = 0; i < returnCrowdfund.length; i++) {
+      init_tx_data.push(
+        {
+          address: returnCrowdfund[i],
+          abi: CrowdFund.abi,
+          functionName: "name",
+        },
+        {
+          address: returnCrowdfund[i],
+          abi: CrowdFund.abi,
+          functionName: "targetAmount",
+        },
+        {
+          address: returnCrowdfund[i],
+          abi: CrowdFund.abi,
+          functionName: "amountRaised",
+        }
+      );
+    }
+  }
+
+  const { data: proposal } = useContractReads({
+    contracts: init_tx_data,
+  });
+
+  const [proposals, setProposals] = useState([proposal]);
+
+
+
+  // for (let i = 0; i < proposals.length; i++) {
+  //   if(id)
+
+  // }
+  const ProposalDetails = () => {
+    return proposals.find((proposal, i) => i == id);
+  }
+
+  console.log("AAAAAAAAAAAAA: ", ProposalDetails());
   return (
     <Fragment>
       <div className="bg-[#0e2433] text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
@@ -61,25 +118,33 @@ const ProjectDetails = () => {
             <div className="flex-1">
               <ul className="text-2xl">
                 <li className="mb-2">
-                  TITLE: <strong>Food Bank</strong>
+                  TITLE: <strong>{ProposalDetails()[0]}</strong>
                 </li>
-                <li className="mb-2">
+                {/* <li className="mb-2">
                   CATEGORY: <strong>Agriculture</strong>
-                </li>
+                </li> */}
                 <li className="mb-2">
-                  AMOUNT RAISED: <strong>15 MATIC</strong>
+                  AMOUNT RAISED: <strong> {ProposalDetails() &&
+                            ethers.utils.formatUnits(
+                              ProposalDetails()[2]?._hex,
+                              18
+                            )} MATIC</strong>
                 </li>
                 <li className="mb-4">
-                  EXPECTED AMOUNT: <strong>25 MATIC</strong>
+                  EXPECTED AMOUNT: <strong> {ProposalDetails() &&
+                            ethers.utils.formatUnits(
+                              ProposalDetails()[1]?._hex,
+                              18
+                            )} MATIC</strong>
                 </li>
-                <li className="mb-2 w-[60%]">
+                {/* <li className="mb-2 w-[60%]">
                   <ProgressBar percentage={"40"} />
                   <p className="text-right text-base">40%</p>
-                </li>
+                </li> */}
               </ul>
             </div>
             <div className="flex-1 mb-8">
-              <div className="underline text-3xl">DESCRIPTION</div>
+              {/* <div className="underline text-3xl">DESCRIPTION</div>
               <p className="text-xl">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ve ro
                 sed id ducimus odio, obcaecati a corrupti ab, ipsam temporibus
@@ -94,7 +159,7 @@ const ProjectDetails = () => {
                 doloribus voluptatum suscipit tempore necessitatibus numquam
                 amet ipsam cupiditate corporis quo quisquam accusamus, aperiam
                 ullam repellendus.
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
