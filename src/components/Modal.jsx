@@ -108,7 +108,7 @@ export const DonateModal = ({
             Donate your money to support this honourable project.
           </p>
           <p className="text-lg font-bold">
-            Token Balance: {tokenBalance.toString() / 1e18}
+            Token Balance: {tokenBalance?.toString() / 1e18}
             {/* {ethers.utils.parseEther(tokenBalance)} */}
           </p>
           <form

@@ -106,47 +106,51 @@ const ViewProposal = () => {
       console.log(i);
     }, 1500);
   };
-  console.log();
-  return (
-    <div className="mt-16 font-mono pb-48">
-      <div className="md:flex">
-        <div className="flex-1">
-          <h1 className="text-2xl font-medium flex-1">
-            Topic: {proposal?.topic}
-          </h1>
-          <p className="flex-1">
-            AMOUNT:{" "}
-            <strong>
-              {proposal &&
-                ethers.utils.formatUnits(proposal?.amountProposed?._hex)}{" "}
-              sUSDC
-            </strong>
-            .
-          </p>
-          <p className="flex-1">
-            Total Votes: <strong>{proposal?.votes.toNumber()}</strong>.
-          </p>
-          <p className="flex-1">
-            Category: <strong>{getCategory(proposal?.category)}</strong>.
-          </p>
 
-          <div className="underline text-3xl"></div>
-          <p className="text-xl"></p>
+  return (
+    <div className="w-full bg-[#0e2433] pt-8 min-h-screen">
+      <div className="p-8 w-[400px] rounded-md pt-[3rem] bg-white  mx-auto font-mono">
+        <div className="md:flex ">
+          <div className="flex-1">
+            <h1 className="text-2xl font-medium flex-1">
+              Topic: {proposal?.topic}
+            </h1>
+            <p className="flex-1">
+              AMOUNT:{" "}
+              <strong>
+                {proposal &&
+                  ethers.utils.formatUnits(proposal?.amountProposed?._hex)}{" "}
+                sUSDC
+              </strong>
+              .
+            </p>
+            <p className="flex-1">
+              Total Votes: <strong>{proposal?.votes.toNumber()}</strong>.
+            </p>
+            <p className="flex-1">
+              Category: <strong>{getCategory(proposal?.category)}</strong>.
+            </p>
+
+            <div className="underline text-3xl"></div>
+            <p className="text-xl"></p>
+          </div>
         </div>
-      </div>
-      <div className="flex-1 mb-8"></div>
-      <p className="text-xs">
-        {proposal?.created ? "Qourum Reached" : "* You should only vote once."}
-      </p>
-      {/* There will be a conditional rendering here: to vote for reject or support, a rejected proposal or supported proposal */}
-      <div className="flex items-center justify-between">
-        <button
-          disabled={proposal?.created}
-          onClick={handleVote}
-          className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded"
-        >
-          Vote
-        </button>
+        <div className="flex-1 mb-8"></div>
+        <p className="text-xs">
+          {proposal?.created
+            ? "Qourum Reached"
+            : "* You should only vote once."}
+        </p>
+        {/* There will be a conditional rendering here: to vote for reject or support, a rejected proposal or supported proposal */}
+        <div className="flex items-center justify-between">
+          <button
+            disabled={proposal?.created}
+            onClick={handleVote}
+            className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded"
+          >
+            Vote
+          </button>
+        </div>
       </div>
     </div>
   );

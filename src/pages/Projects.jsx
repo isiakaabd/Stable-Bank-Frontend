@@ -15,7 +15,7 @@ const Projects = () => {
   const init_tx_data = [];
 
   if (returnCrowdfund?.length > 0) {
-    for (let i = 0; i < returnCrowdfund.length; i++) {
+    for (let i = 0; i < returnCrowdfund?.length; i++) {
       init_tx_data.push(
         {
           address: returnCrowdfund[i],
@@ -48,7 +48,7 @@ const Projects = () => {
   let chunckArray = function (array, chunkCount) {
     let chunks = [];
     while (array?.length) {
-      chunks.push(array.splice(0, chunkCount));
+      chunks?.push(array?.splice(0, chunkCount));
     }
     return chunks;
   };
@@ -97,13 +97,13 @@ const Projects = () => {
                       alt="banner"
                     />
                   </div>
-                  <Link to={`/proposal/${proposal[3].toNumber()}`}>
+                  <Link to={`/proposal/${proposal[3]?.toNumber()}`}>
                     <div className="p-6">
                       <h1 className="text-2xl font-medium mb-2">
                         {proposal[0]}
                       </h1>
                       {/* <p className="mb-2">Agriculture Category</p> */}
-                      <p className="mb-6">
+                      {/* <p className="mb-6">
                         <strong>
                           {proposal &&
                             ethers.utils.formatUnits(
@@ -122,7 +122,7 @@ const Projects = () => {
                           MATIC
                         </strong>{" "}
                         RAISED.
-                      </p>
+                      </p> */}
 
                       {/* <ProgressBar percentage={"40"} />
                     <div className="flex justify-end text-base">40%</div> */}
