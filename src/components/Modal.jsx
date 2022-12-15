@@ -13,6 +13,7 @@ import {
   DAO_CONTRACT,
   DAO_TOKEN_CONTRACT,
   sUSDC_CONTRACT,
+  sUSDC_TOKEN_ADDRESS,
 } from "../config";
 import LoadingBtn from "./LoadingBtn";
 import { crowdfund } from "../utils/abi/CrowdFund";
@@ -34,6 +35,17 @@ export const DonateModal = ({
     functionName: "approve",
     args: [crowdFundAddress, amount ? ethers.utils.parseEther(amount) : "0"],
   });
+  const { address } = useAccount();
+  const {
+    data: tokenBalance,
+    // write: getTokenBalance,
+    // isLoading: mintLoading,
+  } = useContractRead({
+    mode: "recklesslyUnprepared",
+    ...sUSDC_CONTRACT,
+    functionName: "balanceOf",
+    args: [address],
+  });
 
   const { isLoading: approveWaitLoading } = useWaitForTransaction({
     hash: approveData?.hash,
@@ -47,7 +59,7 @@ export const DonateModal = ({
 
   const {
     data: donateFundData,
-    isError: donateFundError,
+    error: donateFundError,
     isLoading: donateFundLoading,
     write: donateFund,
   } = useContractWrite({
@@ -74,7 +86,12 @@ export const DonateModal = ({
 
     approve?.();
   };
-
+  useEffect(() => {
+    if (donateFundError) {
+      toast.error(donateFundError.reason);
+    }
+  }, [donateFundError]);
+  console.log(tokenBalance);
   return (
     <Fragment>
       <div className="the__modal__wrapper grid place-items-center z-10 fixed h-screen w-screen top-0 right-0">
@@ -90,7 +107,10 @@ export const DonateModal = ({
           <p className="text-lg mt-2">
             Donate your money to support this honourable project.
           </p>
-
+          <p className="text-lg font-bold">
+            Token Balance: {tokenBalance.toString() / 1e18}
+            {/* {ethers.utils.parseEther(tokenBalance)} */}
+          </p>
           <form
             className="mt-5 max-w-[650px] mx-auto border border-white p-4 rounded md:p-8"
             onSubmit={handleSubmit}

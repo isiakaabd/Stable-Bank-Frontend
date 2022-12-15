@@ -13,6 +13,7 @@ import {
   DAO_CONTRACT,
   DAO_TOKEN_CONTRACT,
   getCategory,
+  sUSDC_TOKEN_ADDRESS,
 } from "../config";
 
 const ViewProposal = () => {
@@ -26,6 +27,7 @@ const ViewProposal = () => {
     functionName: "approve",
     args: [DAO_ADDRESS, ethers.utils.parseEther("1")],
   });
+  //check balance
 
   useWaitForTransaction({
     hash: approveBurnData?.hash,
@@ -75,8 +77,7 @@ const ViewProposal = () => {
 
   const {
     data: adminApproveProposalData,
-    isError: adminApproveProposalError,
-    isLoading: adminApproveProposalLoading,
+
     write: adminApproveProposal,
   } = useContractWrite({
     mode: "recklesslyUnprepared",
@@ -85,7 +86,7 @@ const ViewProposal = () => {
     args: [Number(id)],
   });
 
-  const { isLoading: adminApproveProposalWaitLoading } = useWaitForTransaction({
+  useWaitForTransaction({
     hash: adminApproveProposalData?.hash,
     onSuccess(data) {
       toast.success("Approved Successfully!");

@@ -70,12 +70,13 @@ const Home = () => {
               people to set up a project for a greater good and purpose.
             </div>
             <div className="border-2 border-tertiary p-6 text-xl rounded">
-              Stable Bank DAO is an initiative raised up to raise funds for
-              people to set up a project for a greater good and purpose.
+              Stable Bank DAO aspires to be a pioneer in blockchain-based
+              charitable organizations.
             </div>
             <div className="border-2 border-tertiary p-6 text-xl rounded">
-              Stable Bank DAO is an initiative raised up to raise funds for
-              people to set up a project for a greater good and purpose.
+              Stable Bank DAO is a platform founded by people who want to use
+              crowdfunding to address global issues by using blockchain
+              technology to help charitable causes.{" "}
             </div>
           </div>
         </div>

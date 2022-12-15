@@ -31,12 +31,12 @@ const Projects = () => {
           address: returnCrowdfund[i],
           abi: crowdfund,
           functionName: "amountRaised",
+        },
+        {
+          address: returnCrowdfund[i],
+          abi: crowdfund,
+          functionName: "proposalid",
         }
-        // {
-        //   address: returnCrowdfund[i],
-        //   abi: crowdfund,
-        //   functionName: "proposalID",
-        // }
       );
     }
   }
@@ -44,15 +44,16 @@ const Projects = () => {
   const { data: proposals } = useContractReads({
     contracts: init_tx_data,
   });
-  console.log(proposals);
+
   let chunckArray = function (array, chunkCount) {
     let chunks = [];
-    while (array.length) {
+    while (array?.length) {
       chunks.push(array.splice(0, chunkCount));
     }
     return chunks;
   };
-  const val = chunckArray(proposals, 3);
+  const val = chunckArray(proposals, 4);
+
   return (
     <div className="bg-[#0e2433] lg:px-16 md:px-8 px-8 pt-12">
       <div className="text-white_variant font-mono t-12 pb-32">
@@ -69,22 +70,21 @@ const Projects = () => {
                 alt="banner"
               />
             </div>
-            <Link to={`/proposal/100`}>
-              <div className="p-6">
-                <h1 className="text-2xl font-medium mb-2">
-                  Skills Acquisition for Orphans
-                </h1>
-                <p className="mb-6">
-                  <strong>0.0001 MATIC</strong> OF{" "}
-                  <strong>2000000 MATIC</strong> RAISED.
-                </p>
-              </div>
-            </Link>
+            {/* <Link to={`/proposal/100`}> */}
+            <div className="p-6">
+              <h1 className="text-2xl font-medium mb-2">
+                Skills Acquisition for Orphans
+              </h1>
+              <p className="mb-6">
+                <strong>0.0001 MATIC</strong> OF <strong>2000000 MATIC</strong>{" "}
+                RAISED.
+              </p>
+            </div>
+            {/* </Link> */}
           </div>
 
           {val?.length > 0 ? (
             val?.map((proposal, i) => {
-              console.log(proposal);
               return (
                 <div
                   key={i}
@@ -97,7 +97,7 @@ const Projects = () => {
                       alt="banner"
                     />
                   </div>
-                  <Link to={`/proposal/${i}`}>
+                  <Link to={`/proposal/${proposal[3].toNumber()}`}>
                     <div className="p-6">
                       <h1 className="text-2xl font-medium mb-2">
                         {proposal[0]}
