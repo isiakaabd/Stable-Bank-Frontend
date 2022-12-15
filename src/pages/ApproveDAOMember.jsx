@@ -63,8 +63,7 @@ const ApproveDAOMember = () => {
 
   const {
     data: rejectMemberData,
-    isError: rejectMemberError,
-    isLoading: rejectMemberLoading,
+
     write: rejectMember,
   } = useContractWrite({
     mode: "recklesslyUnprepared",
@@ -73,12 +72,12 @@ const ApproveDAOMember = () => {
     args: [address],
   });
 
-  const { isLoading: rejectDAOWaitLoading } = useWaitForTransaction({
+  useWaitForTransaction({
     hash: rejectMemberData?.hash,
-    onSuccess(data) {
+    onSuccess() {
       toast.success("Successful!");
     },
-    onError(error) {
+    onError() {
       toast.error("Failed!");
     },
   });
@@ -111,9 +110,7 @@ const ApproveDAOMember = () => {
               key={i}
               className="flex items-center justify-between mb-4 flex-wrap"
             >
-              <div className="text-xl font-medium">
-                {member && member?.memberAddress}
-              </div>
+              <div className="text-xl font-medium">{member?.memberAddress}</div>
               <div className="flex items-center">
                 <button
                   onClick={() => handleReject(member?.memberAddress)}

@@ -9,8 +9,6 @@ const Navbar = () => {
 
   const { pathname } = useLocation();
 
-  console.log(location);
-
   return (
     <Fragment>
       {pathname === "/" ? null : (

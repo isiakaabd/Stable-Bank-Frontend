@@ -7,11 +7,12 @@ import LoadingBtn from "../components/LoadingBtn";
 import { DAO_CONTRACT } from "../config";
 
 const CreateProposal = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [category, setCategory] = useState("");
 
   const {
     data: createProposalData,
@@ -22,14 +23,20 @@ const CreateProposal = () => {
     mode: "recklesslyUnprepared",
     ...DAO_CONTRACT,
     functionName: "createProposal",
-    args: [title, description, ethers.utils.parseEther(amount ? amount.toString() : "0"), new Date(deadline).getTime() / 1000],
+    args: [
+      title,
+      description,
+      ethers.utils.parseEther(amount ? amount.toString() : "0"),
+      new Date(deadline).getTime() / 1000,
+      category,
+    ],
   });
 
   const { isLoading: createProposalWaitLoading } = useWaitForTransaction({
     hash: createProposalData?.hash,
     onSuccess(data) {
       toast.success("Successful!");
-      navigate("/fund-me")
+      navigate("/fund-me");
     },
     onError(error) {
       toast.error("Failed!");
@@ -101,6 +108,7 @@ const CreateProposal = () => {
               required
               type={"date"}
               value={deadline}
+              // min={new Date()}
               onChange={(e) => setDeadline(e.target.value)}
               placeholder=" "
               className="w-full border p-3 text-dark border-primary focus:outline-none rounded"
@@ -110,7 +118,7 @@ const CreateProposal = () => {
             </label>
           </div>
 
-          {/* <div className="md:relative mt-5">
+          <div className="md:relative mt-5">
             <div className="font-medium">Category</div>
             <select
               name="category"
@@ -118,11 +126,14 @@ const CreateProposal = () => {
               onChange={(e) => setCategory(e.target.value)}
             >
               <option defaultValue={""}>Select Category</option>
-              <option value={"tech"}>Tech</option>
-              <option value={"finance"}>Finance</option>
-              <option value={"agriculture"}>Agriculture</option>
+              <option value={0}>Tech</option>
+              <option value={1}>Sport</option>
+              <option value={2}>Health</option>
+              <option value={3}>Finance</option>
+              <option value={4}>Study</option>
+              <option value={5}>Travel</option>
             </select>
-          </div> */}
+          </div>
 
           <div className="mt-8 flex justify-center">
             <LoadingBtn

@@ -27,7 +27,7 @@ const VoteProposal = () => {
       ...DAO_CONTRACT,
       functionName: "getAllProposals",
     });
-
+  console.log(getAllProposals?.approved);
   // const { data: returnClonedAddress, isLoading: returnClonedAddressLoading } =
   // useContractRead({
   //   ...DAO_CONTRACT,
@@ -38,7 +38,6 @@ const VoteProposal = () => {
 
   const {
     data: approveBurnData,
-    isError: approveBurnError,
     isLoading: approveBurnLoading,
     write: approveBurn,
   } = useContractWrite({
@@ -60,7 +59,6 @@ const VoteProposal = () => {
 
   const {
     data: voteProposalData,
-    isError: voteProposalError,
     isLoading: voteProposalLoading,
     write: voteProposal,
   } = useContractWrite({
@@ -82,7 +80,6 @@ const VoteProposal = () => {
     },
   });
 
-  const loading = true;
   const handleVote = (i) => {
     setIndex(i);
 
@@ -134,7 +131,7 @@ const VoteProposal = () => {
     args: [Number(index)],
   });
 
-  const { isLoading: adminRejectProposalWaitLoading } = useWaitForTransaction({
+  useWaitForTransaction({
     hash: adminRejectProposalData?.hash,
     onSuccess(data) {
       toast.success("Rejected Successfully!");
@@ -229,10 +226,13 @@ const VoteProposal = () => {
                         />
                       </div>
                       <div className="p-6">
-                        <h1 className="text-2xl font-medium mb-2">
-                          {proposal && proposal?.topic}
+                        <h1
+                          title={proposal?.topic}
+                          className="text-2xl font-medium mb-2 whitespace-nowrap text-ellipsis overflow-hidden ..."
+                        >
+                          {proposal?.topic}
                         </h1>
-                        <p className="mb-6">
+                        <p className="mb-6 ">
                           This project is proposed to raise{" "}
                           <strong>
                             {proposal &&
@@ -243,13 +243,21 @@ const VoteProposal = () => {
                           </strong>
                           .
                         </p>
-
-                        <div className="text-xs">
-                          * You should only vote once.
+                        <div className="mb-2 flex items-center justify-between">
+                          <span className="text-xs mr-auto">
+                            * You should only vote once.
+                          </span>
+                          <span title="vote count ml-auto">
+                            {proposal?.totalVoteCount?.toNumber()}
+                          </span>
                         </div>
-
+                        <div className="mb-2 flex items-center justify-between">
+                          <p className="text-xs">Deadline Day</p>
+                          <span title="vote count ml-auto">
+                            {console.log(proposal?.deadline?.toNumber())}
+                          </span>
+                        </div>
                         {/* There will be a conditional rendering here: to vote for reject or support, a rejected proposal or supported proposal */}
-
                         <div className="flex items-center justify-between">
                           <button
                             onClick={() => handleVote(i)}
@@ -258,7 +266,6 @@ const VoteProposal = () => {
                             Vote
                           </button>
                         </div>
-
                         {/* <button className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded">
                         Rejected
                       </button>

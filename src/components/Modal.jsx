@@ -124,10 +124,7 @@ export const JoinDAOModal = ({ setIsOpen }) => {
     mode: "recklesslyUnprepared",
     ...sUSDC_CONTRACT,
     functionName: "approve",
-    args: [
-      DAO_ADDRESS,
-      ethers.utils.parseEther("10"),
-    ],
+    args: [DAO_ADDRESS, ethers.utils.parseEther("10")],
   });
 
   const { isLoading: approveDAOWaitLoading } = useWaitForTransaction({

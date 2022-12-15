@@ -1,28 +1,82 @@
-import React, { Fragment, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
+  useAccount,
+} from "wagmi";
 import Avatar1 from "../assets/avatar1.jpeg";
 import { JoinDAOModal } from "../components/Modal";
+import { DAO_CONTRACT, sUSDC_MINTING_CONTRACT } from "../config";
 
 const JoinDAO = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { address } = useAccount();
+  const {
+    data,
+    error: mintError,
+    write: mintToken,
+    isLoading: mintLoading,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    functionName: "mintToken",
+    ...sUSDC_MINTING_CONTRACT,
+  });
+
+  // waiting for transaction
+  useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess(data) {
+      console.log(data);
+      toast.success("Mint Successful!");
+    },
+    onError(error) {
+      console.log(error);
+      toast.error("Failed!");
+    },
+  });
+
+  const { data: adminAddressDetails } = useContractRead({
+    ...DAO_CONTRACT,
+    functionName: "Admin",
+  });
+
+  const handleMintDAO = () => {
+    try {
+      mintToken?.();
+    } catch (error) {
+      console.log(mintError);
+      console.log(error);
+      toast.error(mintError);
+    }
+  };
 
   return (
-    <Fragment>
+    <>
       {isOpen && <JoinDAOModal setIsOpen={setIsOpen} />}
       <div className="bg-[#0e2433] text-white_variant lg:px-16 md:px-8 px-8 pt-7 min-h-screen">
         <div className="mb-3 flex justify-end">
-          <Link
-            className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
-            to={"/approve-dao-member"}
-          >
-            Approve DAO Member
-          </Link>
+          {adminAddressDetails === address && (
+            <Link
+              className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
+              to={"/approve-dao-member"}
+            >
+              Approve DAO Member
+            </Link>
+          )}
         </div>
         <div className="">
           <div className="text-center max-w-[800px] mx-auto">
             <div className="text-4xl">
-            The governance of Stable Bank DAO is a decentralized autonomous organization governed by its members via a set of rules and protocols. Stable Bank DAO was founded and is managed by members who share a common goal or purpose. Stable Bank DAO was established to assist in the development of an open-source software project, as well as to fund and manage a charitable organization.
-              
+              The governance of Stable Bank DAO is a decentralized autonomous
+              organization governed by its members via a set of rules and
+              protocols. Stable Bank DAO was founded and is managed by members
+              who share a common goal or purpose. Stable Bank DAO was
+              established to assist in the development of an open-source
+              software project, as well as to fund and manage a charitable
+              organization.
             </div>
             {/* <div className="text-xl mt-4">
               Join our DAO to be part of the <i>Decisions Maker</i>
@@ -32,6 +86,7 @@ const JoinDAO = () => {
           <div className="mt-12 flex justify-center items-center">
             <button
               onClick={() => setIsOpen(true)}
+              disabled={mintLoading}
               className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
             >
               Join DAO
@@ -51,8 +106,11 @@ const JoinDAO = () => {
           </div>
 
           <div className="mt-12 flex-1 flex justify-center items-center">
-            <button className="bg-tertiary px-8 py-2 text-xl rounded font-medium">
-              Mint DAO Token
+            <button
+              className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
+              onClick={handleMintDAO}
+            >
+              {mintLoading ? "Minting" : "  Mint DAO Token"}
             </button>
           </div>
         </div>
@@ -80,7 +138,7 @@ const JoinDAO = () => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   );
 };
 
