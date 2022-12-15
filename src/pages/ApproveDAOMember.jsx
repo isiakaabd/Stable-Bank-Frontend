@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   useContractRead,
@@ -41,8 +41,7 @@ const ApproveDAOMember = () => {
 
   const {
     data: approveMemberData,
-    isError: approveMemberError,
-    isLoading: approveMemberLoading,
+    error: approveMemberDataError,
     write: approveMember,
   } = useContractWrite({
     mode: "recklesslyUnprepared",
@@ -63,7 +62,7 @@ const ApproveDAOMember = () => {
 
   const {
     data: rejectMemberData,
-
+    error: rejectMemberError,
     write: rejectMember,
   } = useContractWrite({
     mode: "recklesslyUnprepared",
@@ -71,7 +70,11 @@ const ApproveDAOMember = () => {
     functionName: "rejectApplicant",
     args: [address],
   });
-
+  useEffect(() => {
+    if (rejectMemberError || approveMemberDataError) {
+      toast(rejectMemberError?.reason || approveMemberDataError?.reason);
+    }
+  }, [rejectMemberError, approveMemberDataError]);
   useWaitForTransaction({
     hash: rejectMemberData?.hash,
     onSuccess() {
@@ -131,20 +134,6 @@ const ApproveDAOMember = () => {
       ) : (
         <div className="">No Member available</div>
       )}
-
-      {/* we may decide to remove this section later */}
-      {/* <div className="pb-48">
-        <h2 className="text-xl md:text-2xl font-mono mb-4 mt-16">
-          List of DAO Members
-        </h2>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((_x, i) => {
-          return (
-            <div key={i} className="flex items-center justify-between mb-4 flex-wrap">
-              <div className="text-xl font-medium">0x1234567890abcdef1234</div>
-            </div>
-          );
-        })}
-      </div> */}
     </div>
   );
 };

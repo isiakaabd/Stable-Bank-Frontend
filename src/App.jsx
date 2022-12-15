@@ -9,6 +9,7 @@ import ProjectDetails from "./pages/ProjectDetails";
 import ProposalDetails from "./pages/ProjectDetails";
 import Projects from "./pages/Projects";
 import Proposals from "./pages/Projects";
+import ViewProposal from "./pages/ViewProposal";
 import VoteProposal from "./pages/VoteProposal";
 import AdminRoute from "./route/AdminRoute";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/create-proposal" element={<CreateProposal />} />
         <Route path="/vote-proposal" element={<VoteProposal />} />
+        <Route path="/vote-proposal/:id" element={<ViewProposal />} />
         <Route
           path="/approve-dao-member"
           element={

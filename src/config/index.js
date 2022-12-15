@@ -1,27 +1,41 @@
-import DAO from "../utils/abi/DAO.json";
+import { daoABI } from "../utils/abi/DAO";
 import SUSDC from "../utils/abi/SUSDC.json";
-import USDCMinting from "../utils/abi/usdcMinting";
+import { mintingABI } from "../utils/abi/usdcMinting";
 import StableBank from "../utils/abi/StableBank.json";
-import CrowdFundFactory from "../utils/abi/crowdFundFactory.json";
+import { crowdFundFactory } from "../utils/abi/crowdFundFactory";
+import education1 from "../assets/education1.jpeg";
+import education2 from "../assets/education2.jpeg";
+import education3 from "../assets/education3.jpeg";
+import health1 from "../assets/health1.jpeg";
+import health2 from "../assets/health2.jpeg";
+import health3 from "../assets/health3.jpeg";
+import sport1 from "../assets/sport1.jpeg";
+import sport2 from "../assets/sport2.jpeg";
+import sport3 from "../assets/sport3.jpeg";
+import tech1 from "../assets/tech1.jpeg";
+import tech2 from "../assets/tech2.jpeg";
+import travel1 from "../assets/travel1.jpeg";
+import travel2 from "../assets/travel2.jpeg";
+import finance1 from "../assets/finance1.jpeg";
 
-export const DAO_ADDRESS = "0x6Af366e15196D13997287A5F7760c7cE5C18a291";
-export const DAO_TOKEN_ADDRESS = "0x2144683943E349562830B5bB2D559650B46F1f11";
-export const sUSDC_TOKEN_ADDRESS = "0x5468b0FDdC8DB2FDCb665EFf28eb35Bbf0AF342d";
+export const DAO_ADDRESS = "0xAAaA5FD177FaD34115433B68dc79e66183516e5E";
+export const DAO_TOKEN_ADDRESS = "0x5320fb13a8ad206bd1AAFE7c65b0426aB75A8336"; //
+export const sUSDC_TOKEN_ADDRESS = "0x2B793942fC423EC0Ee9c57E5D1d20B1E4047753D"; //
 export const CROWDFUND_FACTORY_ADDRESS =
-  "0xA5641e07F05cE12D2a7F35Cc549421dC1c141eF2";
+  "0xcBb31e17708ED5c054579f35DF17b5BC60D4fBb0"; //
 export const MINTING_CONTRACT_ADDRESS =
-  "0xc5167Df8A995b4A89D27c430ECB393106aF7CFa9";
+  "0x7309d5a47D8E1654FCE260C11b1E2A0B68646798";
 export const DAO_FUNDY_NFT_ADDRESS =
-  "0xc5167Df8A995b4A89D27c430ECB393106aF7CFa9";
+  "0x5641834D9B8FD03adef287E63B6EAC08e9bf7743"; //
 
 export const DAO_CONTRACT = {
   address: DAO_ADDRESS,
-  abi: DAO.abi,
+  abi: daoABI,
 };
 
 export const sUSDC_MINTING_CONTRACT = {
   address: MINTING_CONTRACT_ADDRESS,
-  abi: USDCMinting.abi,
+  abi: mintingABI,
 };
 
 export const sUSDC_CONTRACT = {
@@ -36,5 +50,34 @@ export const DAO_TOKEN_CONTRACT = {
 
 export const CROWDFUND_FACTORY_CONTRACT = {
   address: CROWDFUND_FACTORY_ADDRESS,
-  abi: CrowdFundFactory.abi,
+  abi: crowdFundFactory,
+};
+
+export const shortAccount = (account) => {
+  if (account) return account.slice(0, 5) + "..." + account.slice(-5);
+};
+
+export const imagesArray = {
+  0: [tech1, tech2],
+  1: [sport1, sport2, sport3],
+  2: [health1, health2, health3],
+  3: [finance1],
+  4: [education1, education2, education3],
+  5: [travel1, travel2],
+};
+
+export const getCategory = (val) => {
+  return val === 0
+    ? "Tech"
+    : val === 1
+    ? "Sport"
+    : val === 2
+    ? "Health"
+    : val === 3
+    ? "Finance"
+    : val === 4
+    ? "Education"
+    : val === 5
+    ? "Travel"
+    : null;
 };

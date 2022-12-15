@@ -1,8 +1,13 @@
 import { ethers } from "ethers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useContractWrite, useWaitForTransaction } from "wagmi";
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import LoadingBtn from "../components/LoadingBtn";
 import { DAO_CONTRACT } from "../config";
 
@@ -11,12 +16,23 @@ const CreateProposal = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
+  const { address } = useAccount();
   const [deadline, setDeadline] = useState("");
   const [category, setCategory] = useState("");
+  const {
+    data: accountAddress,
+    // write: getTokenBalance,
+    // isLoading: mintLoading,
+  } = useContractRead({
+    mode: "recklesslyUnprepared",
+    ...DAO_CONTRACT,
+    functionName: "viewDAOMemberInfo",
+    args: [address],
+  });
 
   const {
     data: createProposalData,
-    isError: createProposalError,
+    error: createProposalError,
     isLoading: createProposalLoading,
     write: createProposal,
   } = useContractWrite({
@@ -31,6 +47,11 @@ const CreateProposal = () => {
       category,
     ],
   });
+  useEffect(() => {
+    if (createProposalError) {
+      toast(createProposalError.reason);
+    }
+  }, [createProposalError]);
 
   const { isLoading: createProposalWaitLoading } = useWaitForTransaction({
     hash: createProposalData?.hash,
@@ -56,6 +77,21 @@ const CreateProposal = () => {
         onSubmit={handleSubmit}
       >
         <h1 className="text-3xl text-center underline mb-8">Create Proposal</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h4>Registration Status : </h4>
+          <h4
+            className={
+              accountAddress?.joined
+                ? "bg-green text-white p-2"
+                : "bg-red text-white p-2"
+            }
+          >
+            {accountAddress?.joined
+              ? "Approved"
+              : "Pending Approval, Contact Admin"}
+          </h4>{" "}
+        </div>
+
         <div className="">
           <div className="mt-2 md:relative">
             <label className="md:hidden font-medium">Title</label>
@@ -130,7 +166,7 @@ const CreateProposal = () => {
               <option value={1}>Sport</option>
               <option value={2}>Health</option>
               <option value={3}>Finance</option>
-              <option value={4}>Study</option>
+              <option value={4}>Education</option>
               <option value={5}>Travel</option>
             </select>
           </div>

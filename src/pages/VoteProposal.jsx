@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   useAccount,
@@ -10,7 +10,12 @@ import {
 } from "wagmi";
 import Banner from "../assets/project.jpeg";
 import Loader from "../components/Loader";
-import { DAO_ADDRESS, DAO_CONTRACT, DAO_TOKEN_CONTRACT } from "../config";
+import {
+  DAO_ADDRESS,
+  DAO_CONTRACT,
+  DAO_TOKEN_CONTRACT,
+  imagesArray,
+} from "../config";
 
 const VoteProposal = () => {
   const navigate = useNavigate();
@@ -22,19 +27,10 @@ const VoteProposal = () => {
       ...DAO_CONTRACT,
       functionName: "Admin",
     });
-  const { data: getAllProposals, isLoading: getAllProposalsLoading } =
-    useContractRead({
-      ...DAO_CONTRACT,
-      functionName: "getAllProposals",
-    });
-  console.log(getAllProposals?.approved);
-  // const { data: returnClonedAddress, isLoading: returnClonedAddressLoading } =
-  // useContractRead({
-  //   ...DAO_CONTRACT,
-  //   functionName: "returnClonedAddress",
-  // });
-
-  // console.log(returnClonedAddress);
+  const { data: getAllProposals } = useContractRead({
+    ...DAO_CONTRACT,
+    functionName: "getAllProposals",
+  });
 
   const {
     data: approveBurnData,
@@ -59,6 +55,7 @@ const VoteProposal = () => {
 
   const {
     data: voteProposalData,
+    error: voteProposalError,
     isLoading: voteProposalLoading,
     write: voteProposal,
   } = useContractWrite({
@@ -67,6 +64,11 @@ const VoteProposal = () => {
     functionName: "voteProposal",
     args: [Number(index)],
   });
+  useEffect(() => {
+    if (voteProposalError) {
+      toast(voteProposalError?.reason);
+    }
+  }, [voteProposalError]);
 
   const { isLoading: voteProposalWaitLoading } = useWaitForTransaction({
     hash: voteProposalData?.hash,
@@ -120,9 +122,8 @@ const VoteProposal = () => {
   };
 
   const {
+    error: rejectAdminError,
     data: adminRejectProposalData,
-    isError: adminRejectProposalError,
-    isLoading: adminRejectProposalLoading,
     write: adminRejectProposal,
   } = useContractWrite({
     mode: "recklesslyUnprepared",
@@ -150,7 +151,16 @@ const VoteProposal = () => {
       adminApproveProposal?.();
     }, 1500);
   };
+  const x = useCallback((selectedImage) => {
+    return Math.floor(Math.random() * selectedImage.length);
 
+    //eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    if (rejectAdminError) {
+      toast(error.reason);
+    }
+  }, [rejectAdminError]);
   return (
     <div className="bg-[#0e2433] min-h-screen lg:px-16 md:px-8 px-8 pt-12">
       {approveBurnLoading ||
@@ -214,64 +224,49 @@ const VoteProposal = () => {
           {Array.isArray(getAllProposals) &&
             getAllProposals.length > 0 &&
             getAllProposals.map((proposal, i) => {
+              const { topic, amountProposed, category } = proposal;
+              const vote = proposal?.votes.toNumber();
+              console.log();
+              const selectedImage = imagesArray[category];
+
               return (
                 <div key={i}>
                   {!proposal?.created ? (
                     <div className="border-2 border-tertiary text-xl rounded-3xl">
                       <div className="border-b-2 border-tertiary pb-2">
                         <img
-                          src={Banner}
+                          src={selectedImage[x(selectedImage)]}
                           className="rounded-t-3xl w-[100%] h-[250px]"
                           alt="banner"
                         />
                       </div>
                       <div className="p-6">
                         <h1
-                          title={proposal?.topic}
+                          title={topic}
                           className="text-2xl font-medium mb-2 whitespace-nowrap text-ellipsis overflow-hidden ..."
                         >
-                          {proposal?.topic}
+                          {topic}
                         </h1>
                         <p className="mb-6 ">
                           This project is proposed to raise{" "}
                           <strong>
-                            {proposal &&
-                              ethers.utils.formatUnits(
-                                proposal?.amountProposed?._hex
-                              )}{" "}
-                            MATIC
+                            {ethers.utils.formatUnits(amountProposed?._hex)}{" "}
+                            USDC
                           </strong>
                           .
                         </p>
-                        <div className="mb-2 flex items-center justify-between">
-                          <span className="text-xs mr-auto">
-                            * You should only vote once.
-                          </span>
-                          <span title="vote count ml-auto">
-                            {proposal?.totalVoteCount?.toNumber()}
-                          </span>
-                        </div>
-                        <div className="mb-2 flex items-center justify-between">
-                          <p className="text-xs">Deadline Day</p>
-                          <span title="vote count ml-auto">
-                            {console.log(proposal?.deadline?.toNumber())}
-                          </span>
-                        </div>
-                        {/* There will be a conditional rendering here: to vote for reject or support, a rejected proposal or supported proposal */}
+
                         <div className="flex items-center justify-between">
-                          <button
-                            onClick={() => handleVote(i)}
-                            className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded"
-                          >
-                            Vote
-                          </button>
+                          <Link to={`/vote-proposal/${i}`} className="w-full">
+                            <button
+                              // disabled={proposal?.created}
+                              // onClick={() => navigate()}
+                              className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded"
+                            >
+                              View Proposal
+                            </button>
+                          </Link>
                         </div>
-                        {/* <button className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded">
-                        Rejected
-                      </button>
-                      <button className="bg-tertiary w-[100%] px-8 py-2 text-xl rounded">
-                        Approved
-                      </button> */}
                       </div>
                     </div>
                   ) : null}

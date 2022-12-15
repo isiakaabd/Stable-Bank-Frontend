@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -8,32 +8,39 @@ import {
   useAccount,
 } from "wagmi";
 import Avatar1 from "../assets/avatar1.jpeg";
-import { JoinDAOModal } from "../components/Modal";
-import { DAO_CONTRACT, sUSDC_MINTING_CONTRACT } from "../config";
+import { JoinDAOModal, MintModal } from "../components/Modal";
+import { DAO_CONTRACT, shortAccount, sUSDC_MINTING_CONTRACT } from "../config";
 
 const JoinDAO = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMint, setIsMint] = useState(false);
   const { address } = useAccount();
+
   const {
-    data,
+    data: mintUSDCData,
+    write: mintUSDCToken,
     error: mintError,
-    write: mintToken,
-    isLoading: mintLoading,
+    isLoading: mintUSDCLoading,
   } = useContractWrite({
     mode: "recklesslyUnprepared",
-    functionName: "mintToken",
     ...sUSDC_MINTING_CONTRACT,
+    functionName: "mintToken",
+    onError(error) {
+      toast.error(`Failed ${mintError.reason}`);
+    },
+  });
+  const { data: allMembers } = useContractRead({
+    functionName: "showAllDAOMemberDetails",
+    ...DAO_CONTRACT,
   });
 
-  // waiting for transaction
+  // transaction for USDC
   useWaitForTransaction({
-    hash: data?.hash,
-    onSuccess(data) {
-      console.log(data);
+    hash: mintUSDCData?.hash,
+    onSuccess() {
       toast.success("Mint Successful!");
     },
-    onError(error) {
-      console.log(error);
+    onError() {
       toast.error("Failed!");
     },
   });
@@ -42,17 +49,12 @@ const JoinDAO = () => {
     ...DAO_CONTRACT,
     functionName: "Admin",
   });
+  const [members, setMembers] = useState([]);
+  useEffect(() => {
+    setMembers(allMembers);
+  }, [allMembers]);
 
-  const handleMintDAO = () => {
-    try {
-      mintToken?.();
-    } catch (error) {
-      console.log(mintError);
-      console.log(error);
-      toast.error(mintError);
-    }
-  };
-
+  const handleMintUSDC = () => mintUSDCToken?.();
   return (
     <>
       {isOpen && <JoinDAOModal setIsOpen={setIsOpen} />}
@@ -86,7 +88,7 @@ const JoinDAO = () => {
           <div className="mt-12 flex justify-center items-center">
             <button
               onClick={() => setIsOpen(true)}
-              disabled={mintLoading}
+              // disabled={mintLoading}
               className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
             >
               Join DAO
@@ -105,12 +107,19 @@ const JoinDAO = () => {
             </div>
           </div>
 
-          <div className="mt-12 flex-1 flex justify-center items-center">
+          <div className="mt-12 flex-1 flex justify-center items-center gap-4">
             <button
               className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
-              onClick={handleMintDAO}
+              onClick={() => setIsMint(true)}
             >
-              {mintLoading ? "Minting" : "  Mint DAO Token"}
+              Mint DAO Token
+            </button>
+            <button
+              className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
+              onClick={handleMintUSDC}
+              disabled={mintUSDCLoading}
+            >
+              {mintUSDCLoading ? "Minting" : "Mint USDC"}
             </button>
           </div>
         </div>
@@ -119,25 +128,41 @@ const JoinDAO = () => {
           <div className="mb-10 text-center text-3xl underline">
             DAO MEMBERS
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-            <img
-              src={Avatar1}
-              className="border border-tertiary p-6 text-xl rounded-full w-[100%]"
-              alt="member of dao"
-            />
-            <img
-              src={Avatar1}
-              className="border border-tertiary p-6 text-xl rounded-full w-[100%]"
-              alt="member of dao"
-            />
-            <img
-              src={Avatar1}
-              className="border border-tertiary p-6 text-xl rounded-full w-[100%]"
-              alt="member of dao"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            {members?.length > 0 ? (
+              members.map((member, index) => {
+                const { memberAddress, name } = member;
+                return (
+                  <div
+                    key={index}
+                    className=" border-[3px]  rounded-b-md border-tertiary"
+                  >
+                    <img
+                      src={Avatar1}
+                      className=" w-full"
+                      alt="member of dao"
+                    />
+                    <div className="p-3">
+                      <p className="font-bold text-[1.6rem]" title={name}>
+                        {name}
+                      </p>
+                      <p
+                        title={memberAddress}
+                        className="text-[1.2rem] font-medium"
+                      >
+                        {shortAccount(memberAddress)}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No Member</p>
+            )}
           </div>
         </div>
       </div>
+      {isMint && <MintModal setIsOpen={setIsMint} />}
     </>
   );
 };

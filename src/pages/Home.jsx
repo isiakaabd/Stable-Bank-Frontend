@@ -32,7 +32,7 @@ const Home = () => {
   // };
 
   return (
-    <div className="bg-image">
+    <div className="bg-[#0e2433]">
       <div className="text-center text-white py-7 lg:px-16 md:px-8 px-8">
         <div className="font-bold font-mono text-4xl">StableBankDAO</div>
       </div>
@@ -49,41 +49,31 @@ const Home = () => {
           <div className="mt-32 justify-center flex text-white_variant">
             <Link
               to={"/fund-me"}
-              className="bg-[#0e2433] px-8 py-2 text-xl rounded font-medium"
+              className="bg-tertiary px-8 py-2 text-xl rounded font-medium"
             >
               Fund Me
             </Link>
             <Link
               to={"/join-dao"}
-              className="bg-[#0e2433] px-8 py-2 text-xl rounded font-medium ml-6"
+              className="bg-tertiary px-8 py-2 text-xl rounded font-medium ml-6"
             >
               Join DAO
             </Link>
-            {/* <form onSubmit={handleSubmit}>
-              <button
-                // onClick={mintsUSDC?.()}
-                type="submit"
-                className="bg-[#0e2433] px-8 py-2 text-xl rounded font-medium ml-6"
-              >
-                {mintsUSDCLoading || mintsUSDCWaitLoading ? "Minting" : "Mint"}
-              </button>
-
-            </form> */}
           </div>
         </div>
 
         <div className="text-white_variant font-mono mt-32 pb-32">
           <div className="mb-6 text-center text-3xl underline">WHAT WE DO</div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-            <div className="border-2 border-[#0e2433] p-6 text-xl rounded">
+            <div className="border-2 border-tertiary p-6 text-xl rounded">
               Stable Bank DAO is an initiative raised up to raise funds for
               people to set up a project for a greater good and purpose.
             </div>
-            <div className="border-2 border-[#0e2433] p-6 text-xl rounded">
+            <div className="border-2 border-tertiary p-6 text-xl rounded">
               Stable Bank DAO is an initiative raised up to raise funds for
               people to set up a project for a greater good and purpose.
             </div>
-            <div className="border-2 border-[#0e2433] p-6 text-xl rounded">
+            <div className="border-2 border-tertiary p-6 text-xl rounded">
               Stable Bank DAO is an initiative raised up to raise funds for
               people to set up a project for a greater good and purpose.
             </div>

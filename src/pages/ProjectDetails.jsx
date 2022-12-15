@@ -1,21 +1,42 @@
 import { ethers } from "ethers";
 import React, { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useContractRead, useContractReads } from "wagmi";
+import { toast } from "react-toastify";
+import {
+  useAccount,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import { AppreciationModal, DonateModal } from "../components/Modal";
-import ProgressBar from "../components/ProgressBar";
-import { CROWDFUND_FACTORY_CONTRACT } from "../config";
-import CrowdFund from "../utils/abi/CrowdFund.json";
+
+import {
+  CROWDFUND_FACTORY_CONTRACT,
+  DAO_CONTRACT,
+  getCategory,
+} from "../config";
+import { crowdfund } from "../utils/abi/CrowdFund";
 
 const ProjectDetails = () => {
-
   const { id } = useParams();
-
+  console.log(id);
+  const { address } = useAccount();
   const [isOpenDonateModal, setIsOpenDonateModal] = useState(false);
-
   const [isApreciationModal, setIsApreciationModal] = useState(false);
 
+  const { data: adminAddress, isLoading: adminAddressLoading } =
+    useContractRead({
+      ...DAO_CONTRACT,
+      functionName: "Admin",
+    });
 
+  const { data: singleProposal } = useContractRead({
+    ...DAO_CONTRACT,
+    functionName: "viewProposal",
+    args: [Number(id)],
+  });
+  console.log(singleProposal);
 
   const { data: returnCrowdfund, isLoading: returnCrowdfundLoading } =
     useContractRead({
@@ -30,17 +51,17 @@ const ProjectDetails = () => {
       init_tx_data.push(
         {
           address: returnCrowdfund[i],
-          abi: CrowdFund.abi,
+          abi: crowdfund,
           functionName: "name",
         },
         {
           address: returnCrowdfund[i],
-          abi: CrowdFund.abi,
+          abi: crowdfund,
           functionName: "targetAmount",
         },
         {
           address: returnCrowdfund[i],
-          abi: CrowdFund.abi,
+          abi: crowdfund,
           functionName: "amountRaised",
         }
       );
@@ -53,35 +74,59 @@ const ProjectDetails = () => {
 
   const [proposals, setProposals] = useState([proposal]);
 
-
-
-  // for (let i = 0; i < proposals.length; i++) {
-  //   if(id)
-
-  // }
   const ProposalDetails = () => {
-    return proposals.find((proposal, i) => i == id);
-  }
+    return proposals.find((_x, i) => i == id);
+  };
 
-  console.log("AAAAAAAAAAAAA: ", ProposalDetails());
+  const {
+    data: withdrawData,
+    isError: withdrawError,
+    isLoading: withdrawLoading,
+    write: withdraw,
+  } = useContractWrite({
+    mode: "recklesslyUnprepared",
+    address: returnCrowdfund[id],
+    abi: crowdfund,
+    functionName: "withdraw",
+    onError(error) {
+      toast.error(error?.reason);
+    },
+  });
+
+  const { isLoading: withdrawWaitLoading } = useWaitForTransaction({
+    hash: withdrawData?.hash,
+    onSuccess(data) {
+      toast.success("Donation sent to recipient!");
+    },
+    onError(error) {
+      toast.error("Failed!");
+    },
+  });
+  console.log(singleProposal);
   return (
     <Fragment>
       <div className="bg-[#0e2433] text-white_variant lg:px-16 md:px-8 px-8 pt-12 min-h-screen">
         <div className="mb-8">
           <div className="hidden lg:flex flex-wrap items-center justify-between">
             {/* The in progress button will also be used for cancelled and completed */}
-            <button className="bg-tertiary px-8 py-2 text-xl rounded">
+            {/* <button className="bg-tertiary px-8 py-2 text-xl rounded">
               IN PROGRESS
-            </button>
+            </button> */}
 
-            <div className="">
-              <button className="bg-red px-8 py-2 text-xl rounded mr-4">
-                STOP PROJECT
-              </button>
-              <button className="bg-green px-8 py-2 text-xl rounded">
-                SEND FUND
-              </button>
-            </div>
+            {address !== adminAddress && (
+              <div className="">
+                {/* <button className="bg-red px-8 py-2 text-xl rounded mr-4">
+                  STOP PROJECT
+                </button> */}
+                <button
+                  onClick={() => withdraw?.()}
+                  className="bg-green px-8 py-2 text-xl rounded"
+                >
+                  SEND FUND
+                </button>
+              </div>
+            )}
+
             <button
               onClick={() => setIsOpenDonateModal(true)}
               className="bg-tertiary px-8 py-2 text-xl rounded"
@@ -91,16 +136,23 @@ const ProjectDetails = () => {
           </div>
 
           <div className="flex lg:hidden flex-wrap items-center justify-between">
-            <button className="bg-red px-12 py-2 text-xl rounded w-[100%]">
+            {/* <button className="bg-red px-12 py-2 text-xl rounded w-[100%]">
               STOP PROJECT
             </button>
             <button className="bg-tertiary px-14 py-2 text-xl rounded mt-4 w-[100%]">
               IN PROGRESS
-            </button>
+            </button> */}
 
-            <button className="bg-green px-16 py-2 text-xl rounded mt-4 w-[100%]">
-              SEND FUND
-            </button>
+            {address == adminAddress && (
+              <button
+                onClick={() => withdraw?.()}
+                className="bg-green px-16 py-2 text-xl rounded mt-4 w-[100%]"
+              >
+                {withdrawWaitLoading || withdrawWaitLoading
+                  ? "Loading..."
+                  : "SEND FUND"}
+              </button>
+            )}
 
             <button
               onClick={() => setIsOpenDonateModal(true)}
@@ -118,24 +170,33 @@ const ProjectDetails = () => {
             <div className="flex-1">
               <ul className="text-2xl">
                 <li className="mb-2">
-                  TITLE: <strong>{ProposalDetails()[0]}</strong>
+                  TITLE: <strong>{singleProposal?.topic}</strong>
                 </li>
-                {/* <li className="mb-2">
-                  CATEGORY: <strong>Agriculture</strong>
-                </li> */}
                 <li className="mb-2">
-                  AMOUNT RAISED: <strong> {ProposalDetails() &&
-                            ethers.utils.formatUnits(
-                              ProposalDetails()[2]?._hex,
-                              18
-                            )} MATIC</strong>
+                  CATEGORY:{" "}
+                  <strong>{getCategory(singleProposal?.category)}</strong>
+                </li>
+                <li className="mb-2">
+                  AMOUNT RAISED:{" "}
+                  <strong>
+                    {" "}
+                    {ethers.utils.formatUnits(
+                      singleProposal?.amountProposed._hex,
+                      18
+                    )}{" "}
+                    MATIC
+                  </strong>
                 </li>
                 <li className="mb-4">
-                  EXPECTED AMOUNT: <strong> {ProposalDetails() &&
-                            ethers.utils.formatUnits(
-                              ProposalDetails()[1]?._hex,
-                              18
-                            )} MATIC</strong>
+                  EXPECTED AMOUNT:{" "}
+                  <strong>
+                    {" "}
+                    {ethers.utils.formatUnits(
+                      singleProposal?.amountProposed?._hex,
+                      18
+                    )}{" "}
+                    MATIC
+                  </strong>
                 </li>
                 {/* <li className="mb-2 w-[60%]">
                   <ProgressBar percentage={"40"} />
@@ -144,28 +205,28 @@ const ProjectDetails = () => {
               </ul>
             </div>
             <div className="flex-1 mb-8">
-              {/* <div className="underline text-3xl">DESCRIPTION</div>
+              <div className="underline text-3xl">DESCRIPTION</div>
               <p className="text-xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ve ro
-                sed id ducimus odio, obcaecati a corrupti ab, ipsam temporibus
-                laudantium modi corporis necessitatibus. Cupiditate quos magnam
-                harum nemo, quia culpa. Quo vel beatae commodi, ab quos
-                corporis. Deserunt minima, quod sint suscipit placeat unde
-                sapiente nisi, illum ipsa, similique autem rerum eligendi vitae!
-                Repudiandae nam eos laudantium error soluta illo ipsam! Dicta
-                necessitatibus id distinctio rerum molestias cumque inventore
-                eligendi magni, unde impedit voluptatem quis, debitis vero
-                tempore veniam voluptas ipsum consequuntur! Incidunt soluta
-                doloribus voluptatum suscipit tempore necessitatibus numquam
-                amet ipsam cupiditate corporis quo quisquam accusamus, aperiam
-                ullam repellendus.
-              </p> */}
+                The goal of this project is to provide orphans with the digital
+                skills and training they need to secure job opportunities and
+                gain financial independence. By teaching them valuable skills
+                such as writing, coding, and design, aiming to empower them to
+                create a better future for themselves. These skills will not
+                only give them the ability to earn a living, but also provide
+                them with a sense of purpose and fulfillment. Additionally, the
+                hands-on skills we will teach, such as fashion design and
+                makeup, will give them the ability to create something for
+                themselves and develop a sense of pride in their work. By
+                addressing the problem of dependency, we hope to give orphans
+                the tools they need to build a better life for themselves.
+              </p>
             </div>
           </div>
         </div>
       </div>
       {isOpenDonateModal && (
         <DonateModal
+          crowdFundAddress={returnCrowdfund[id]}
           setIsApreciationModal={setIsApreciationModal}
           setIsOpenDonateModal={setIsOpenDonateModal}
         />
@@ -173,7 +234,7 @@ const ProjectDetails = () => {
 
       {isApreciationModal && (
         <AppreciationModal
-          amount={"10"}
+          name={ProposalDetails()[0]}
           setIsApreciationModal={setIsApreciationModal}
         />
       )}
